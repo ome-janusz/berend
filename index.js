@@ -10,9 +10,15 @@ client.on("ready", () => {
 
 client.on("message", (message) => {
   if (message.member.id != client.user.id
-  	&& Date.now() - message.member.joinedTimestamp < config.membershipThreshold
-  	&& urlRegex.test(message.content)) {
-    message.channel.send(`Gebruikers zonder rollen kunnen geen links plaatsen; de link is zodanig verwijderd`);
+    	&& Date.now() - message.member.joinedTimestamp < config.membershipThreshold
+    	&& urlRegex.test(message.content)) {
+    if (config.hasOwnProperty('notificationChannelId')) {
+      client.channels.fetch(config.notificationChannelId)
+        .then(channel => channel.send(`Linkspam geplaatst door gebruiker <@${message.member.id}>; gebruiker wordt gekickt.`));
+    }
+    
+    message.channel.send((config.hasOwnProperty('notificationRoleId') ?
+        `<@&${config.notificationRoleId}> ` : '') + config.message);
     message.delete();
     message.member.kick();
   }
