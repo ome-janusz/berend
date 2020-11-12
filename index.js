@@ -8,6 +8,11 @@ function isSpam(content) {
     return urlRegex.test(content) || config.keywords.find(w => content.toLowerCase().indexOf(w) != -1) ? true : false;
 }
 
+function messageShortcut(content) {
+    let newContent = content.replace(urlRegex, "(link verwijderd)");
+    return newContent.substring(0, Math.min(120, newContent.length));
+}
+
 client.on("ready", () => {
   console.log(`Bot has started as ${client.user.tag}`); 
 });
@@ -18,7 +23,8 @@ client.on("message", (message) => {
     	&& isSpam(message.content)) {
     if (config.hasOwnProperty('notificationChannelId')) {
       client.channels.fetch(config.notificationChannelId)
-        .then(channel => channel.send(`Linkspam geplaatst door gebruiker <@${message.member.id}>; gebruiker wordt gekickt.`));
+        .then(channel => channel.send(`Linkspam geplaatst door gebruiker <@${message.member.id}>; ` +
+            `gebruiker wordt gekickt.\nBericht: ${messageShortcut(message.content)}...`));
     }
     
     message.channel.send((config.hasOwnProperty('notificationRoleId') ?
