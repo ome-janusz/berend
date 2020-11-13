@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const auth = require("./auth.json");
 const config = require("./config.json");
-const urlRegex = new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?")
+const urlRegex = new RegExp(/([a-zA-Z0-9]+:\/\/)?(\w+:\w+@)?([a-zA-Z0-9.-]+\.[A-Za-z]{2,4})(:\d+)?(\/.*)?/g);
 
 function isSpam(content) {
     return urlRegex.test(content) || config.keywords.find(w => content.toLowerCase().indexOf(w) != -1) ? true : false;
@@ -10,7 +10,7 @@ function isSpam(content) {
 
 function messageShortcut(content) {
     let newContent = content.replace(urlRegex, "(link verwijderd)");
-    return newContent.substring(0, Math.min(120, newContent.length));
+    return newContent.substring(0, Math.min(config.messageShortcutLength, newContent.length));
 }
 
 client.on("ready", () => {
