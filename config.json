@@ -3,5 +3,6 @@
   "keywords": ["bitcoin", "btc", "ehtereum", "liteon", "crypto", "legit", "uniswap", "libra" ],
   "membershipThreshold": 10000,
   "notificationChannelId": "656510750143283210",
-  "notificationRoleId": "756872779747295383"
+  "notificationRoleId": "756872779747295383",
+  "messageShortcutLength": 60
 }
