@@ -34,4 +34,12 @@ client.on("message", (message) => {
   }
 });
 
+client.on("guildMemberAdd", (member) => {
+    console.log("guildMemberAdd");
+    if (config.hasOwnProperty('taalbotChannelId')) {
+      client.channels.fetch(config.taalbotChannelId)
+        .then(channel => channel.send(`?onboard <@${member.id}>`));
+    }
+});
+
 client.login(auth.token);
