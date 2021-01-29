@@ -19,7 +19,8 @@ client.on("ready", () => {
 
 client.on("message", (message) => {
   if (message.member.id != client.user.id
-    	&& Date.now() - message.member.joinedTimestamp < config.membershipThreshold
+    	&& (Date.now() - message.member.joinedTimestamp < config.membershipThreshold
+    	  || message.member.roles.cache.size < 2)
     	&& isSpam(message.content)) {
     if (config.hasOwnProperty('notificationChannelId')) {
       client.channels.fetch(config.notificationChannelId)
